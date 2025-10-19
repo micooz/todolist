@@ -8,9 +8,7 @@ export interface TodoItem {
 }
 // 创建 Axios 实例
 const apiClient = axios.create({
-  baseURL: import.meta.env.MODE === 'development'
-    ? 'http://localhost:3000'   
-    : 'https://todolist-git-dev-yujiangans-projects.vercel.app/',  
+  baseURL: 'http://localhost:3000',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -81,8 +79,8 @@ export const toggleAllTodos = async (allCompleted:boolean):Promise<TodoItem[]> =
     }
 }
 
- 
-// 删除所有已完成的待办事项  
+
+// 删除所有已完成的待办事项
 export const deleteCompletedTodos = async ():Promise<TodoItem[]> => {
     try {
         return await apiClient.delete('./delete-completed',)

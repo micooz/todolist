@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, nextTick, Ref, onMounted } from 'vue';
+import { ref, computed, nextTick, Ref } from 'vue';
 import * as apis from '@/api/axios-apilist';
- 
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import type { TodoItem } from './api/axios-apilist';
+
+const props = defineProps<{
+  todos: TodoItem[];
+}>();
+
 // 输入框值
 const newTodo = ref("");
 // 任务列表
-const todos: Ref<Todo[]> = ref([]);
-onMounted(async () => {
-  todos.value = await apis.fetchTodos();
-})
+const todos: Ref<TodoItem[]> = ref(props.todos);
 
 // 筛选项
 const filter: Ref<"all" | "active" | "completed"> = ref("all");
@@ -88,10 +85,10 @@ const toggleAll = async () => {
 const editingId: Ref<number | null> = ref(null);
 const editingText = ref("");
 // 开始编辑任务
-const startEditing =  (todo: Todo) => {
+const startEditing =  (todo: TodoItem) => {
   editingId.value = todo.id;
   editingText.value = todo.text;
-   
+
   // 等待DOM更新后自动聚焦
   nextTick(() => {
     const input = document.getElementById(`edit-input-${todo.id}`) as HTMLInputElement | null;
@@ -105,7 +102,7 @@ const startEditing =  (todo: Todo) => {
 };
 
 // 完成编辑
-const finishEditing = async(todo: Todo) => {
+const finishEditing = async(todo: TodoItem) => {
   // 避免blur重复执行函数
   const trimmedText = editingText.value.trim();
   // 输入为空或者与原文本相同则删除任务
@@ -130,7 +127,7 @@ const finishEditing = async(todo: Todo) => {
   editingText.value = "";
 };
 // blur专用函数
-const blurEditing = async (todo: Todo) => {
+const blurEditing = async (todo: TodoItem) => {
   // 避免blur重复执行函数
   const trimmedText = editingText.value.trim();
   if (!trimmedText) {
@@ -161,7 +158,7 @@ const cancelEditing = () => {
 };
 
 // 保存编辑（按回车键）退出编辑（esc）
-const saveOnEnter = (e: KeyboardEvent, todo: Todo) => {
+const saveOnEnter = (e: KeyboardEvent, todo: TodoItem) => {
 
   if (e.key === "Enter") {
     finishEditing(todo);
@@ -288,7 +285,7 @@ const saveOnEnter = (e: KeyboardEvent, todo: Todo) => {
   </div>
 </template>
 
-<style scoped>
+<style >
 .edit:focus {
   outline: 2px solid #b83f45;
   font-size: 22px;

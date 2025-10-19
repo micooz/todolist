@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": "./main.ts",
+    "./shared": "./shared.ts"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,7 +27,6 @@
     "@vitejs/plugin-vue": "^6.0.0",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
-    
     "eslint-plugin-vue": "~10.2.0",
     "prettier": "^3.6.2",
     "unplugin-vue-components": "^29.0.0",
